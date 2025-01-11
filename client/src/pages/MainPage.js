@@ -158,7 +158,10 @@ function MainPage(props) {
         </div>
             <section className="mt-5 text-white font-bold">
             {amountInSourceCurrency} {currencyNames[sourceCurrency]} is equivalent to {""}
-            {amountInTargetCurrency} in {currencyNames[targetCurrency]}
+           <span className="text-green-500 font-medium">
+               {""}
+               {amountInTargetCurrency}
+           </span> in {currencyNames[targetCurrency]}
         </section>
             </div>
     );
