@@ -8,7 +8,7 @@ function MainPage(props) {
     const [amountInSourceCurrency,setAmountInSourceCurrency]=useState(0);
     const [amountInTargetCurrency,setAmountInTargetCurrency]=useState(0);
     const [currencyNames, setCurrencyNames] = useState({});
-
+    const [loading,setLoading] = useState(true);
 
     //handleSubmint method
     const handleSubmit= async (e)=>{
@@ -23,6 +23,8 @@ function MainPage(props) {
                 },
             });
         setAmountInTargetCurrency(response.data)
+            setLoading(false);
+
             console.log(amountInSourceCurrency,amountInTargetCurrency);
         }catch (err){
             console.error("Error converting currency", err);
@@ -156,14 +158,15 @@ function MainPage(props) {
                 </form>
             </section>
         </div>
-            <section className="mt-5 text-white font-bold">
-            {amountInSourceCurrency} {currencyNames[sourceCurrency]} is equivalent to {""}
-           <span className="text-green-500 font-medium">
+            {!loading ?( <section className="mt-5 text-white font-bold">
+                {amountInSourceCurrency} {currencyNames[sourceCurrency]} is equivalent to {""}
+                <span className="text-green-500 font-medium">
                {""}
-               {amountInTargetCurrency}
+                    {amountInTargetCurrency}
            </span> in {currencyNames[targetCurrency]}
-        </section>
-            </div>
+            </section>): null}
+
+        </div>
     );
 }
 
