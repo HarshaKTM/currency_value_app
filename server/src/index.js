@@ -18,6 +18,8 @@ app.get("/getAllCurrencies", async(req, res) => {
         const nameData = namesResponse.data;
 
         return res.json({nameData});
+
+
     }catch(error) {
         console.log('Error fetching currencies', error);
         res.status(5000).json({ message: 'Error fetching currencies' });
@@ -29,3 +31,33 @@ app.listen(5000, ()=>{
     console.log('Server is running on port 5000');
 });
 //API routes
+//get the targer amount
+app.get("/convert" , async (req,res)=>{
+    const {
+        date,
+        sourceCurrency,
+        targetCurrency,
+        amountInSourceCurrency
+    } =req.query;
+    try {
+        const dataUrl= `https://openexchangerates.org/api/historical/${date}.json?app_id=e305486dc653438da26ba298d052c176`;
+
+    const dataResponse = await axios.get(dataUrl);
+    const rates= dataResponse.data.rates;
+
+        //rate
+        const sourseRate =rates[sourceCurrency]
+        const targetRate = rates[targetCurrency];
+        //target value
+        const targetAmount =(targetRate / sourseRate)*amountInSourceCurrency;
+
+        return res.json(targetAmount);
+
+    }catch(err) {
+        console.log('Error converting currency', err);
+        res.status(5000).json({ message: 'Error converting currency' });
+    }
+})
+
+
+// targetAmo = (targetRate/srcRare)*srcAmo

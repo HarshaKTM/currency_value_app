@@ -11,9 +11,22 @@ function MainPage(props) {
 
 
     //handleSubmint method
-    const handleSubmit=(e)=>{
+    const handleSubmit= async (e)=>{
         e.preventDefault();
-        console.log(sourceCurrency);
+        try {
+            const response =await axios.get("http://localhost:5000/convert" , {
+                params:{
+                    date,
+                    sourceCurrency,
+                    targetCurrency,
+                    amountInSourceCurrency
+                },
+            });
+        setAmountInTargetCurrency(response.data)
+            console.log(amountInSourceCurrency,amountInTargetCurrency);
+        }catch (err){
+            console.error("Error converting currency", err);
+        }
     };
 
     //get all currency name
@@ -81,8 +94,7 @@ function MainPage(props) {
                             dark:text-white dark:focus:ring-green-500
                             dark:focus:border-green-500"
                                 placeholder="Source Currency" required>
-                            <option value="">Select source currency</option>
-                            {currencyNames && typeof currencyNames === "object" &&
+                            <option value="">Select source currency</option>{
                                 Object.keys(currencyNames).map((currency) => (
                                     <option key={currency} value={currency}>
                                         {currencyNames[currency]}
@@ -144,6 +156,8 @@ function MainPage(props) {
                 </form>
             </section>
         </div>
+            {amountInSourceCurrency} {currencyNames[sourceCurrency]} is equivalent to {""}
+            {amountInTargetCurrency} {currencyNames[targetCurrency]} is equivalent to {""}
         </div>
     );
 }
